@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'SF Pro Display', 'SF Pro Text', 'Segoe UI', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI", system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: #0f172a;
@@ -20,9 +22,8 @@ html {
 
 body {
   margin: 0;
-  min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background-color: #f8fafc;
   color: #0f172a;
 }
 
@@ -48,3 +49,13 @@ input {
   text-decoration: none;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
