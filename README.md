@@ -40,7 +40,11 @@ The app follows a modular structure with route boundaries for:
 - Resources
 - ZYNX
 
-Each route includes a temporary placeholder surface so future features can be added without changing the app shell.
+The Learning Centre, local URL Inspector, Practice Lab, curriculum-aligned Assessments, and lesson progress tracking are functional. Flashcards, resources, and ZYNX remain under development.
+
+## Local learning progress
+
+Lesson completion is explicit: opening a lesson does not mark it complete. Learners can mark a lesson complete or reopen it from the lesson page. Completion records are stored in the browser's `localStorage` under the versioned `phisguard.learning-progress` key and validated against current curriculum slugs when read. The Progress page derives completion counts, percentage, and recent activity from those records. Clearing browser data removes the saved progress; there is no account, cloud sync, or permanent assessment-result storage.
 
 ## Security and privacy principles
 

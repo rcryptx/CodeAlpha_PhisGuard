@@ -41,6 +41,12 @@ describe("PhisGuard routes", () => {
     expect(assessmentsLink).toBeDefined();
     expect(assessmentsLink).toHaveAttribute("href", "/assessments");
     expect(assessmentsLink).toHaveTextContent("Available now");
+    const progressLink = screen
+      .getAllByRole("link", { name: /Progress/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(progressLink).toBeDefined();
+    expect(progressLink).toHaveAttribute("href", "/progress");
+    expect(progressLink).toHaveTextContent("Available now");
   });
 
   it("renders a not found state for unknown routes", () => {
