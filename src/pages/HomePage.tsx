@@ -164,12 +164,13 @@ export function HomePage() {
                 id="tools-heading"
                 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900"
               >
-                Learning first. More tools in progress.
+                Learn, inspect, and practice.
               </h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-slate-600">
-              The learning centre is ready to use. Other areas have navigable
-              foundations but are still being developed.
+              The learning centre, URL Inspector, and Practice Lab are available
+              now. Other areas have navigable foundations and are still being
+              developed.
             </p>
           </div>
           <div className="mt-6 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -186,7 +187,9 @@ export function HomePage() {
                   <span className="mt-1 block text-xs text-slate-500">
                     {tool.to === "/inspector"
                       ? "Available now · local URL analysis"
-                      : "Foundation in progress"}
+                      : tool.to === "/practice"
+                        ? "Available now · simulated scenarios"
+                        : "Foundation in progress"}
                   </span>
                 </span>
                 <span

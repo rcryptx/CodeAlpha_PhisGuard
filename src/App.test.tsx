@@ -29,6 +29,12 @@ describe("PhisGuard routes", () => {
     expect(inspectorLink).toBeDefined();
     expect(inspectorLink).toHaveAttribute("href", "/inspector");
     expect(inspectorLink).toHaveTextContent("Available now");
+    const practiceLink = screen
+      .getAllByRole("link", { name: /Practice Lab/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(practiceLink).toBeDefined();
+    expect(practiceLink).toHaveAttribute("href", "/practice");
+    expect(practiceLink).toHaveTextContent("Available now");
   });
 
   it("renders a not found state for unknown routes", () => {
@@ -74,6 +80,26 @@ describe("PhisGuard routes", () => {
     expect(
       screen.getByRole("heading", {
         name: "No obvious structural indicators detected",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("integrates the interactive Practice Lab at its public route", () => {
+    render(
+      <MemoryRouter initialEntries={["/practice"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Practice Lab" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Choose a scenario" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: /Start scenario: An urgent account check/,
       }),
     ).toBeInTheDocument();
   });

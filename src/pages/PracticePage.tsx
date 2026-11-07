@@ -1,11 +1,15 @@
-import { PlannedFeaturePage } from "@/components/features/PlannedFeaturePage";
+import { PageMetadata } from "@/components/seo/PageMetadata";
+import { PracticeLab } from "@/features/practice-lab/PracticeLab";
 
 export function PracticePage() {
   return (
-    <PlannedFeaturePage
-      title="Practice Lab"
-      description="The Practice Lab is planned as a space for clearly labelled phishing simulations, decision exercises, and explanations."
-      path="/practice"
-    />
+    <>
+      <PageMetadata
+        title="Practice Lab"
+        description="Practice identifying phishing and social engineering in fictional, interactive scenarios with immediate explanations and session-only results."
+        path="/practice"
+      />
+      <PracticeLab />
+    </>
   );
 }
