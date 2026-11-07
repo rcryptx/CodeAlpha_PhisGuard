@@ -23,6 +23,12 @@ describe("PhisGuard routes", () => {
     expect(
       screen.getAllByText("Think Before You Click.").length,
     ).toBeGreaterThan(0);
+    const inspectorLink = screen
+      .getAllByRole("link", { name: /URL Inspector/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(inspectorLink).toBeDefined();
+    expect(inspectorLink).toHaveAttribute("href", "/inspector");
+    expect(inspectorLink).toHaveTextContent("Available now");
   });
 
   it("renders a not found state for unknown routes", () => {
@@ -47,6 +53,29 @@ describe("PhisGuard routes", () => {
       expect(screen.getByRole("main")).toBeInTheDocument();
       unmount();
     }
+  });
+
+  it("integrates the local URL inspector at its public route", () => {
+    render(
+      <MemoryRouter initialEntries={["/inspector"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "URL Inspector" }),
+    ).toBeInTheDocument();
+
+    fireEvent.change(screen.getByRole("textbox", { name: "URL to analyze" }), {
+      target: { value: "https://example.com" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Analyze URL" }));
+
+    expect(
+      screen.getByRole("heading", {
+        name: "No obvious structural indicators detected",
+      }),
+    ).toBeInTheDocument();
   });
 
   it("renders a lesson at its stable URL with working next-lesson navigation", () => {

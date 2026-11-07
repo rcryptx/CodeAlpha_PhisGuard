@@ -184,7 +184,9 @@ export function HomePage() {
                     {tool.label}
                   </span>
                   <span className="mt-1 block text-xs text-slate-500">
-                    Foundation in progress
+                    {tool.to === "/inspector"
+                      ? "Available now · local URL analysis"
+                      : "Foundation in progress"}
                   </span>
                 </span>
                 <span

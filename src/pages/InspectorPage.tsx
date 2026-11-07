@@ -1,11 +1,30 @@
-import { PlannedFeaturePage } from "@/components/features/PlannedFeaturePage";
+import { PageMetadata } from "@/components/seo/PageMetadata";
+import { InspectorForm } from "@/features/url-inspector/InspectorForm";
 
 export function InspectorPage() {
   return (
-    <PlannedFeaturePage
-      title="URL Inspector"
-      description="A future local-first tool will explain suspicious URL indicators without visiting submitted addresses or claiming that a URL is safe based only on heuristics."
-      path="/inspector"
-    />
+    <>
+      <PageMetadata
+        title="URL Inspector"
+        description="Analyze URL structure locally with explainable indicators. PhisGuard never visits submitted URLs or checks live reputation."
+        path="/inspector"
+      />
+      <div className="mx-auto max-w-4xl">
+        <header className="mb-8 border-b border-slate-200 pb-7">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
+            PhisGuard tool
+          </p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-5xl">
+            URL Inspector
+          </h1>
+          <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg">
+            Review a link’s structure for indicators that may deserve a closer
+            look. This is a local heuristic analysis—not a malware scan or a
+            check of the website’s live reputation.
+          </p>
+        </header>
+        <InspectorForm />
+      </div>
+    </>
   );
 }
