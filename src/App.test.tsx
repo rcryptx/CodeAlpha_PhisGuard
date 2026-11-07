@@ -35,6 +35,12 @@ describe("PhisGuard routes", () => {
     expect(practiceLink).toBeDefined();
     expect(practiceLink).toHaveAttribute("href", "/practice");
     expect(practiceLink).toHaveTextContent("Available now");
+    const assessmentsLink = screen
+      .getAllByRole("link", { name: /Assessments/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(assessmentsLink).toBeDefined();
+    expect(assessmentsLink).toHaveAttribute("href", "/assessments");
+    expect(assessmentsLink).toHaveTextContent("Available now");
   });
 
   it("renders a not found state for unknown routes", () => {
@@ -100,6 +106,29 @@ describe("PhisGuard routes", () => {
     expect(
       screen.getByRole("button", {
         name: /Start scenario: An urgent account check/,
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("integrates the assessment selection at its public route", () => {
+    render(
+      <MemoryRouter initialEntries={["/assessments"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Assessments" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Full assessment" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Start full assessment" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: "Start topic assessment: Introduction to phishing",
       }),
     ).toBeInTheDocument();
   });

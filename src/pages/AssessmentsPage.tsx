@@ -1,11 +1,15 @@
-import { PlannedFeaturePage } from "@/components/features/PlannedFeaturePage";
+import { PageMetadata } from "@/components/seo/PageMetadata";
+import { Assessments } from "@/features/assessments/Assessments";
 
 export function AssessmentsPage() {
   return (
-    <PlannedFeaturePage
-      title="Assessments"
-      description="Assessments are planned to help learners review cybersecurity concepts through scored questions and answer explanations. No assessment is available yet."
-      path="/assessments"
-    />
+    <>
+      <PageMetadata
+        title="Assessments"
+        description="Test your phishing-awareness knowledge with curriculum-aligned assessments, deterministic scoring, explanations, and lesson review."
+        path="/assessments"
+      />
+      <Assessments />
+    </>
   );
 }
