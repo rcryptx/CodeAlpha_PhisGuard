@@ -168,9 +168,10 @@ export function HomePage() {
               </h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-slate-600">
-              The learning centre, URL Inspector, Practice Lab, Assessments, and
-              local lesson progress are available now. Other areas have
-              navigable foundations and are still being developed.
+              The learning centre, URL Inspector, Practice Lab, Resources,
+              Assessments, and local lesson progress are available now. ZYNX
+              requires server-side Gemini configuration; other areas are still
+              being developed.
             </p>
           </div>
           <div className="mt-6 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -191,9 +192,13 @@ export function HomePage() {
                         ? "Available now · simulated scenarios"
                         : tool.to === "/progress"
                           ? "Available now · saved in this browser"
-                          : tool.to === "/assessments"
-                            ? "Available now · curriculum-aligned"
-                            : "Foundation in progress"}
+                          : tool.to === "/resources"
+                            ? "Available now · curated guidance"
+                            : tool.to === "/zynx"
+                              ? "Gemini server setup required"
+                              : tool.to === "/assessments"
+                                ? "Available now · curriculum-aligned"
+                                : "Foundation in progress"}
                   </span>
                 </span>
                 <span

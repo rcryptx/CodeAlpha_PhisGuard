@@ -47,6 +47,12 @@ describe("PhisGuard routes", () => {
     expect(progressLink).toBeDefined();
     expect(progressLink).toHaveAttribute("href", "/progress");
     expect(progressLink).toHaveTextContent("Available now");
+    const resourcesLink = screen
+      .getAllByRole("link", { name: /Resources/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(resourcesLink).toBeDefined();
+    expect(resourcesLink).toHaveAttribute("href", "/resources");
+    expect(resourcesLink).toHaveTextContent("Available now");
   });
 
   it("renders a not found state for unknown routes", () => {
@@ -93,6 +99,34 @@ describe("PhisGuard routes", () => {
       screen.getByRole("heading", {
         name: "No obvious structural indicators detected",
       }),
+    ).toBeInTheDocument();
+  });
+
+  it("integrates the Resources library and ZYNX information page", () => {
+    const resources = render(
+      <MemoryRouter initialEntries={["/resources"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(
+      screen.getByRole("heading", { name: "Learning resources" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Recognize and report phishing/ }),
+    ).toHaveAttribute(
+      "href",
+      "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+    );
+    resources.unmount();
+
+    render(
+      <MemoryRouter initialEntries={["/zynx"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole("heading", { name: "ZYNX" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Open ZYNX assistant" }),
     ).toBeInTheDocument();
   });
 
