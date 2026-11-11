@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { Breadcrumbs } from "@/components/learning/Breadcrumbs";
 import { LessonNavigation } from "@/components/learning/LessonNavigation";
 import { PageMetadata } from "@/components/seo/PageMetadata";
+import { LessonCompletionControl } from "@/features/progress/LessonCompletionControl";
+import { ProgressNotice } from "@/features/progress/ProgressNotice";
+import { useProgress } from "@/features/progress/useProgress";
 import {
   getLessonIndex,
   getRelatedLessons,
@@ -13,6 +16,7 @@ import {
 export function LessonPage() {
   const { slug = "" } = useParams();
   const lesson = lessonBySlug(slug);
+  const { storageNotice } = useProgress();
 
   if (!lesson) {
     return (
@@ -60,6 +64,7 @@ export function LessonPage() {
         path={`/learn/${lesson.slug}`}
       />
       <article className="mx-auto max-w-4xl">
+        <ProgressNotice message={storageNotice} />
         <Breadcrumbs
           items={[
             { label: "Learn", to: "/learn" },
@@ -80,6 +85,8 @@ export function LessonPage() {
             {lesson.introduction}
           </p>
         </header>
+
+        <LessonCompletionControl lessonSlug={lesson.slug} />
 
         <section
           aria-labelledby="objectives-heading"

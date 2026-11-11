@@ -16,6 +16,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html.dark {
+  color: #f8fafc;
+  background-color: #090d16;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -25,6 +30,12 @@ body {
   min-height: 100vh;
   background-color: #f8fafc;
   color: #0f172a;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html.dark body {
+  background-color: #090d16;
+  color: #f8fafc;
 }
 
 * {

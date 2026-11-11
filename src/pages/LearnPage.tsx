@@ -3,9 +3,12 @@ import { useMemo, useState } from "react";
 import { LessonCard } from "@/components/learning/LessonCard";
 import { PageMetadata } from "@/components/seo/PageMetadata";
 import { lessonCategories, lessons } from "@/features/learning/curriculum";
+import { ProgressNotice } from "@/features/progress/ProgressNotice";
+import { useProgress } from "@/features/progress/useProgress";
 
 export function LearnPage() {
   const [query, setQuery] = useState("");
+  const { completedLessons, storageNotice, isLessonCompleted } = useProgress();
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const filteredLessons = useMemo(
     () =>
@@ -25,6 +28,7 @@ export function LearnPage() {
         path="/learn"
       />
       <div className="mx-auto max-w-6xl">
+        <ProgressNotice message={storageNotice} />
         <header className="border-b border-slate-200 pb-8">
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
             The learning centre
@@ -49,6 +53,9 @@ export function LearnPage() {
             </span>
             <span className="rounded-full border border-slate-300 px-3 py-1">
               Beginner friendly
+            </span>
+            <span className="rounded-full border border-slate-300 px-3 py-1">
+              {completedLessons.length} of {lessons.length} completed
             </span>
           </div>
         </header>
@@ -122,6 +129,7 @@ export function LearnPage() {
                         key={lesson.slug}
                         lesson={lesson}
                         number={lessons.indexOf(lesson) + 1}
+                        completed={isLessonCompleted(lesson.slug)}
                       />
                     ))}
                   </div>

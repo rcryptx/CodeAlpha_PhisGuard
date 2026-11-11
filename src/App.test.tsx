@@ -35,6 +35,24 @@ describe("PhisGuard routes", () => {
     expect(practiceLink).toBeDefined();
     expect(practiceLink).toHaveAttribute("href", "/practice");
     expect(practiceLink).toHaveTextContent("Available now");
+    const assessmentsLink = screen
+      .getAllByRole("link", { name: /Assessments/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(assessmentsLink).toBeDefined();
+    expect(assessmentsLink).toHaveAttribute("href", "/assessments");
+    expect(assessmentsLink).toHaveTextContent("Available now");
+    const progressLink = screen
+      .getAllByRole("link", { name: /Progress/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(progressLink).toBeDefined();
+    expect(progressLink).toHaveAttribute("href", "/progress");
+    expect(progressLink).toHaveTextContent("Available now");
+    const resourcesLink = screen
+      .getAllByRole("link", { name: /Resources/ })
+      .find((link) => link.textContent?.includes("Available now"));
+    expect(resourcesLink).toBeDefined();
+    expect(resourcesLink).toHaveAttribute("href", "/resources");
+    expect(resourcesLink).toHaveTextContent("Available now");
   });
 
   it("renders a not found state for unknown routes", () => {
@@ -84,6 +102,34 @@ describe("PhisGuard routes", () => {
     ).toBeInTheDocument();
   });
 
+  it("integrates the Resources library and ZYNX information page", () => {
+    const resources = render(
+      <MemoryRouter initialEntries={["/resources"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(
+      screen.getByRole("heading", { name: "Learning resources" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Recognize and report phishing/ }),
+    ).toHaveAttribute(
+      "href",
+      "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing",
+    );
+    resources.unmount();
+
+    render(
+      <MemoryRouter initialEntries={["/zynx"]}>
+        <App />
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole("heading", { name: "ZYNX" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Open ZYNX assistant" }),
+    ).toBeInTheDocument();
+  });
+
   it("integrates the interactive Practice Lab at its public route", () => {
     render(
       <MemoryRouter initialEntries={["/practice"]}>
@@ -100,6 +146,29 @@ describe("PhisGuard routes", () => {
     expect(
       screen.getByRole("button", {
         name: /Start scenario: An urgent account check/,
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("integrates the assessment selection at its public route", () => {
+    render(
+      <MemoryRouter initialEntries={["/assessments"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Assessments" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Full assessment" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Start full assessment" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: "Start topic assessment: Introduction to phishing",
       }),
     ).toBeInTheDocument();
   });
