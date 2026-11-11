@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/zynx/status",
+      "destination": "/api/zynx/status"
+    },
+    {
+      "source": "/api/zynx/chat",
+      "destination": "/api/zynx/chat"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

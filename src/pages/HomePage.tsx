@@ -164,13 +164,14 @@ export function HomePage() {
                 id="tools-heading"
                 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900"
               >
-                Learn, inspect, and practice.
+                Learn, inspect, practice, and track your lessons.
               </h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-slate-600">
-              The learning centre, URL Inspector, and Practice Lab are available
-              now. Other areas have navigable foundations and are still being
-              developed.
+              The learning centre, URL Inspector, Practice Lab, Resources,
+              Assessments, and local lesson progress are available now. ZYNX
+              requires server-side Gemini configuration; other areas are still
+              being developed.
             </p>
           </div>
           <div className="mt-6 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -189,7 +190,15 @@ export function HomePage() {
                       ? "Available now · local URL analysis"
                       : tool.to === "/practice"
                         ? "Available now · simulated scenarios"
-                        : "Foundation in progress"}
+                        : tool.to === "/progress"
+                          ? "Available now · saved in this browser"
+                          : tool.to === "/resources"
+                            ? "Available now · curated guidance"
+                            : tool.to === "/zynx"
+                              ? "Gemini server setup required"
+                              : tool.to === "/assessments"
+                                ? "Available now · curriculum-aligned"
+                                : "Foundation in progress"}
                   </span>
                 </span>
                 <span

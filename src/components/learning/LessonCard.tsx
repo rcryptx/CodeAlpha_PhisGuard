@@ -5,9 +5,14 @@ import type { Lesson } from "@/features/learning/curriculum";
 type LessonCardProps = {
   lesson: Lesson;
   number: number;
+  completed?: boolean;
 };
 
-export function LessonCard({ lesson, number }: LessonCardProps) {
+export function LessonCard({
+  lesson,
+  number,
+  completed = false,
+}: LessonCardProps) {
   return (
     <Link
       className="group flex min-h-40 flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-700"
@@ -16,7 +21,9 @@ export function LessonCard({ lesson, number }: LessonCardProps) {
       <div>
         <div className="flex items-center justify-between gap-3 text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
           <span>Lesson {String(number).padStart(2, "0")}</span>
-          <span>{lesson.category}</span>
+          <span className="text-right">
+            {completed ? "Completed" : lesson.category}
+          </span>
         </div>
         <h3 className="mt-4 text-lg font-semibold tracking-tight text-slate-900 group-hover:underline group-hover:underline-offset-4">
           {lesson.title}
