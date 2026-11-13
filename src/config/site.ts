@@ -9,6 +9,7 @@ export const navItems = [
   { to: '/flashcards', label: 'Flashcards' },
   { to: '/assessments', label: 'Assessments' },
   { to: '/progress', label: 'Progress' },
+  { to: '/glossary', label: 'Glossary' },
   { to: '/resources', label: 'Resources' },
   { to: '/zynx', label: 'ZYNX' },
 ] as const;

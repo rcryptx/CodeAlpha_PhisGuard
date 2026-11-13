@@ -43,18 +43,24 @@ Repository: [https://github.com/rcryptx/CodeAlpha_PhisGuard](https://github.com/
    - Direct references to authoritative guidelines from CISA (Cybersecurity & Infrastructure Security Agency) and UK NCSC (National Cyber Security Centre).
    - Cross-linked with relevant internal curriculum lessons for context.
 
-7. **ZYNX AI Security Companion (`/zynx`)**
+7. **Cybersecurity Glossary (`/glossary`)**
+   - Locally bundled glossary of cybersecurity terms spanning 12 categories, each with a concise definition, a plain-language explanation, and a practical example.
+   - Full-text search across terms, definitions, and keywords, plus filtering by category and difficulty, sorting, and an A–Z term detail view.
+   - Privacy-first study aids stored only in your browser: bookmarked terms and a recently viewed list (`phisguard.glossary-bookmarks`, `phisguard.glossary-recent`).
+   - Cross-linked to related terms and relevant Learning Centre lessons, with light/dark responsive accessible design.
+
+8. **ZYNX AI Security Companion (`/zynx`)**
    - Educational AI assistant powered by Google Gemini (default: `gemini-3.6-flash`).
    - Strict architectural boundaries: all Gemini API interactions use Google's official `@google/genai` SDK on the server via a secure Node.js proxy or Vercel serverless function (`/api/zynx/chat` and `/api/zynx/status`).
    - Safeguards: validated request limits, rate limiting, bounded responses, and session-only context retention.
    - Graceful fallback: when unconfigured, the app presents a transparent setup requirement rather than fabricated answers.
 
-8. **Design & Theming**
+9. **Design & Theming**
    - Designed following Swiss Minimalist typography and layout principles: high contrast, clean slate neutrals, and functional information hierarchy.
    - Native Light Mode and Dark Mode support with persistent state (`phisguard.theme`) and system preference detection.
    - Fully responsive for mobile, tablet, and desktop viewing.
 
-9. **In-Development Features**
+10. **In-Development Features**
    - **Flashcards (`/flashcards`)**: The data model and types (`src/features/flashcards/types.ts`) are scaffolded for future spaced-repetition decks, with an explicit in-development notice displayed on the route.
 
 ---
@@ -98,7 +104,8 @@ Repository: [https://github.com/rcryptx/CodeAlpha_PhisGuard](https://github.com/
 
 - **Zero Client-Side Secrets**: API keys are strictly forbidden from browser builds and `VITE_` prefixed variables. Only the server/serverless layer accesses `GEMINI_API_KEY`.
 - **Local Heuristics Stay Local**: URL Inspector processes inputs entirely in-browser. URLs are never sent to external servers or logged.
-- **Fail Gracefully**: If Gemini is not configured, ZYNX accurately reports that server setup is required. Core application features (Learn, URL Inspector, Practice Lab, Assessments, Progress, Resources) remain fully functional offline or without an API key.
+- **Fail Gracefully**: If Gemini is not configured, ZYNX accurately reports that server setup is required. Core application features (Learn, URL Inspector, Practice Lab, Assessments, Progress, Resources, Glossary) remain fully functional offline or without an API key.
+- **Bundled Reference Content**: The Cybersecurity Glossary ships as local, typed data (`src/features/glossary/terms.ts`). No definitions, search queries, bookmarks, or recently viewed terms are sent to any external service.
 
 ---
 

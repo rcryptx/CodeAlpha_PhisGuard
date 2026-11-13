@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { AssessmentsPage } from "@/pages/AssessmentsPage";
 import { FlashcardsPage } from "@/pages/FlashcardsPage";
+import { GlossaryPage } from "@/pages/GlossaryPage";
+import { GlossaryTermPage } from "@/pages/GlossaryTermPage";
 import { HomePage } from "@/pages/HomePage";
 import { InspectorPage } from "@/pages/InspectorPage";
 import { LessonPage } from "@/pages/LessonPage";
@@ -26,6 +28,8 @@ function App() {
         <Route path="/assessments" element={<AssessmentsPage />} />
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="/resources" element={<ResourcesPage />} />
+        <Route path="/glossary" element={<GlossaryPage />} />
+        <Route path="/glossary/:termId" element={<GlossaryTermPage />} />
         <Route path="/zynx" element={<ZynxPage />} />
       </Route>
 
