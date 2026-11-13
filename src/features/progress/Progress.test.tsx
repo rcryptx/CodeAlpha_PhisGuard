@@ -254,4 +254,47 @@ describe("lesson progress experience", () => {
       screen.getByRole("heading", { name: "A fresh place to begin" }),
     ).toBeInTheDocument();
   });
+
+  it("allows clearing all saved progress locally", () => {
+    window.localStorage.setItem(
+      PROGRESS_STORAGE_KEY,
+      JSON.stringify({
+        version: 1,
+        completedLessons: [
+          {
+            lessonSlug: "introduction-to-phishing",
+            completedAt: new Date().toISOString(),
+          },
+        ],
+      }),
+    );
+    window.dispatchEvent(
+      new StorageEvent("storage", {
+        key: PROGRESS_STORAGE_KEY,
+        newValue: window.localStorage.getItem(PROGRESS_STORAGE_KEY),
+        storageArea: window.localStorage,
+      }),
+    );
+
+    render(
+      <MemoryRouter initialEntries={["/progress"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText("8%")).toBeInTheDocument();
+    expect(screen.getByText(/1\s+lesson completed/)).toBeInTheDocument();
+    const resetButton = screen.getByRole("button", {
+      name: "Reset local progress",
+    });
+    expect(resetButton).toBeInTheDocument();
+    fireEvent.click(resetButton);
+
+    expect(
+      screen.getByRole("heading", { name: "A fresh place to begin" }),
+    ).toBeInTheDocument();
+    expect(window.localStorage.getItem(PROGRESS_STORAGE_KEY)).toContain(
+      '"completedLessons":[]',
+    );
+  });
 });

@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from "react";
 
 import {
+  clearProgress,
   getProgressSnapshot,
   isLessonCompleted,
   markLessonCompleted,
@@ -22,5 +23,6 @@ export function useProgress() {
       isLessonCompleted(lessonSlug, snapshot.data.completedLessons),
     markLessonCompleted,
     markLessonIncomplete,
+    clearProgress,
   };
 }

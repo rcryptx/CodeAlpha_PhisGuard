@@ -14,7 +14,7 @@ function formatCompletionDate(value: string) {
 }
 
 export function ProgressPage() {
-  const { completedLessons, storageNotice } = useProgress();
+  const { completedLessons, storageNotice, clearProgress } = useProgress();
   const summary = getProgressSummary({
     version: 1,
     completedLessons,
@@ -225,6 +225,30 @@ export function ProgressPage() {
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+
+        {completedLessons.length > 0 && (
+          <section
+            aria-labelledby="manage-progress-heading"
+            className="mt-12 border-t border-slate-200 pt-7"
+          >
+            <h2
+              id="manage-progress-heading"
+              className="text-sm font-semibold text-slate-900"
+            >
+              Manage saved progress
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Clear all locally saved lesson completions on this device.
+            </p>
+            <button
+              type="button"
+              onClick={() => clearProgress()}
+              className="mt-3 inline-flex min-h-10 items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+            >
+              Reset local progress
+            </button>
           </section>
         )}
       </div>

@@ -152,6 +152,13 @@ export function markLessonIncomplete(lessonSlug: string) {
   });
 }
 
+export function clearProgress() {
+  persist({
+    version: 1,
+    completedLessons: [],
+  });
+}
+
 export function isLessonCompleted(
   lessonSlug: string,
   records: CompletedLessonRecord[] = getProgressSnapshot().data
