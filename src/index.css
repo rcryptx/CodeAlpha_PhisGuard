@@ -19,6 +19,7 @@
 html.dark {
   color: #f8fafc;
   background-color: #090d16;
+  color-scheme: dark;
 }
 
 html {
@@ -68,5 +69,66 @@ input {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@layer utilities {
+  /* Keep neutral Tailwind colors readable when a component lacks dark variants. */
+  html.dark [class~="text-slate-950"]:not([class*="dark:text-"]) {
+    color: #f8fafc;
+  }
+
+  html.dark [class~="text-slate-900"]:not([class*="dark:text-"]) {
+    color: #f1f5f9;
+  }
+
+  html.dark [class~="text-slate-800"]:not([class*="dark:text-"]),
+  html.dark [class~="text-slate-700"]:not([class*="dark:text-"]) {
+    color: #e2e8f0;
+  }
+
+  html.dark [class~="text-slate-600"]:not([class*="dark:text-"]) {
+    color: #cbd5e1;
+  }
+
+  html.dark [class~="text-slate-500"]:not([class*="dark:text-"]) {
+    color: #94a3b8;
+  }
+
+  html.dark [class~="bg-white"]:not([class*="dark:bg-"]) {
+    background-color: #0f172a;
+  }
+
+  html.dark
+    [class~="bg-slate-50"]:not([class*="dark:bg-"]),
+  html.dark
+    [class~="bg-slate-100"]:not([class*="dark:bg-"]) {
+    background-color: #1e293b;
+  }
+
+  html.dark [class~="bg-slate-200"]:not([class*="dark:bg-"]) {
+    background-color: #334155;
+  }
+
+  html.dark [class~="hover:bg-slate-100"]:hover:not([class*="dark:hover:bg-"]) {
+    background-color: #334155;
+  }
+
+  html.dark [class~="border-slate-200"]:not([class*="dark:border-"]) {
+    border-color: #334155;
+  }
+
+  html.dark [class~="border-slate-300"]:not([class*="dark:border-"]) {
+    border-color: #475569;
+  }
+
+  html.dark [class~="border-slate-400"]:not([class*="dark:border-"]) {
+    border-color: #64748b;
+  }
+
+  html.dark [class~="divide-slate-200"]:not([class*="dark:divide-"])
+    > :not([hidden])
+    ~ :not([hidden]) {
+    border-color: #334155;
   }
 }
