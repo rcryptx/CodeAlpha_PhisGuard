@@ -1,3 +1,4 @@
+import { getHostnameLabels, isIpLiteralHost } from "./hostname";
 import type { ParsedUrlInput, UrlFinding } from "./types";
 
 const commonBrands = [
@@ -40,20 +41,17 @@ function finding(
   explanation: string,
   evidence: string,
   recommendation: string,
+  limitation: string,
 ): UrlFinding {
-  return { ruleId, title, severity, explanation, evidence, recommendation };
-}
-
-function isIpAddress(hostname: string) {
-  if (hostname.startsWith("[") && hostname.endsWith("]")) return true;
-  return /^(?:\d{1,3}\.){3}\d{1,3}$/.test(hostname);
-}
-
-function getHostnameLabels(hostname: string) {
-  return hostname
-    .replace(/^\[|\]$/g, "")
-    .split(".")
-    .filter(Boolean);
+  return {
+    ruleId,
+    title,
+    severity,
+    explanation,
+    evidence,
+    recommendation,
+    limitation,
+  };
 }
 
 function hasMisleadingBrandDomain(hostname: string) {
@@ -116,6 +114,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "This inspector only evaluates HTTP and HTTPS URL structure. Other schemes may refer to local files, embedded content, or application actions.",
         `Scheme: ${url.protocol}`,
         "Do not open this address unless you expected this type of link and understand what it will do.",
+        "This only reads the scheme text. It cannot determine what the link would do, whether the surrounding message is trustworthy, or whether the scheme is expected in this context.",
       ),
     );
     return findings;
@@ -130,6 +129,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "HTTP does not protect the connection from being read or altered in transit in the way HTTPS is designed to.",
         `Scheme: ${url.protocol}`,
         "For sign-ins or sensitive information, navigate to the service’s known HTTPS address instead.",
+        "A site can still be trustworthy without HTTPS, and a missing HTTPS indicator says nothing about the site’s intent or content.",
       ),
     );
   }
@@ -143,12 +143,13 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "A web URL needs a hostname to identify the destination site.",
         `Parsed address has no hostname (scheme: ${url.protocol}).`,
         "Check the address and use the website’s known hostname.",
+        "This describes URL syntax alone; it does not identify any real destination.",
       ),
     );
     return findings;
   }
 
-  if (isIpAddress(hostname)) {
+  if (isIpLiteralHost(hostname)) {
     findings.push(
       finding(
         "ip-address-hostname",
@@ -157,6 +158,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "The URL points directly to a numeric IP address instead of using a named domain. This can be legitimate, but is less typical for public services.",
         `Hostname: ${hostname}`,
         "Verify that you expected this exact IP address before continuing.",
+        "Many legitimate services and internal tools use IP addresses, and this check cannot determine who operates the address.",
       ),
     );
   }
@@ -173,6 +175,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "Some Unicode letters can resemble characters from other writing systems. The browser converts internationalized hostnames to an ASCII representation.",
         `Entered hostname: ${rawHostname}; parsed hostname: ${hostname}`,
         "Compare the hostname with the organization’s known address rather than relying on how similar the characters look.",
+        "Similar-looking characters are not automatically deceptive, and this check does not confirm that a domain imitates a specific brand.",
       ),
     );
   }
@@ -186,6 +189,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "Punycode is used to represent internationalized domain labels. Some visually similar characters can be difficult to distinguish from ordinary Latin letters.",
         `Hostname label: ${labels.find((label) => label.startsWith("xn--"))}`,
         "Verify the exact domain through a trusted source before entering information.",
+        "Punycode is a standard, legitimate encoding; its presence does not by itself indicate impersonation.",
       ),
     );
   }
@@ -200,6 +204,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "The hostname contains a familiar brand name followed by a domain ending such as .com, but that text appears before the hostname’s trailing labels.",
         `Hostname contains “${misleadingBrand}” before trailing labels “${labels.slice(-2).join(".")}”.`,
         "Read the hostname from right to left and use the brand’s known app or website instead.",
+        "The brand text may simply be part of a legitimate domain, and this heuristic uses a small built-in brand list rather than a registry.",
       ),
     );
   }
@@ -216,6 +221,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "A hostname label combines a familiar brand name with terms often used in sign-in or account prompts. This pattern alone does not establish who operates the domain.",
         `Hostname label: ${impersonationLabel}`,
         "Confirm the complete domain using a trusted source before signing in.",
+        "A label combining a brand-like word and a sign-in term does not establish who controls the domain.",
       ),
     );
   }
@@ -230,6 +236,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "Several labels appear before the final two hostname labels. Deep subdomains can be legitimate, but make the actual site domain harder to notice.",
         `${subdomainCount} labels appear before the final two hostname labels.`,
         "Identify the domain near the end of the hostname and verify it independently.",
+        "Many subdomains serve normal, legitimate purposes, and the count alone does not indicate risk.",
       ),
     );
   }
@@ -243,6 +250,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "The URL includes user information before the hostname. This structure can obscure which host the browser will contact and may expose credentials in copied URLs.",
         "The authority contains a username or password before @; credential values are not displayed.",
         "Do not use the link. Remove it from messages and navigate to the intended service through a trusted route.",
+        "Some legitimate links include user information, and this check cannot tell whether those credentials are current or intentional.",
       ),
     );
   }
@@ -256,6 +264,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "Multiple @ characters can make the boundary between user information and hostname difficult to interpret.",
         "More than one literal @ appears in the URL authority.",
         "Do not rely on the displayed text; verify the destination domain independently.",
+        "Standard parsers read only the final @ as the credential boundary, so the pattern is confusing rather than proof of harm.",
       ),
     );
   }
@@ -269,6 +278,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "The destination uses a port other than the default port for its scheme. This is common in some applications, but should be expected.",
         `Port: ${url.port}`,
         "Confirm that this service is expected to use this port before entering sensitive information.",
+        "Non-default ports are common in development and self-hosted services and are not a reliable indicator of intent.",
       ),
     );
   }
@@ -282,6 +292,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "The URL is substantially longer than most ordinary links and may be difficult to inspect. Length alone does not indicate malicious behavior.",
         `Length: ${raw.length} characters (review threshold: 2,048).`,
         "Avoid opening an unexpectedly long link. Use a known route to reach the intended service.",
+        "Long URLs are frequently legitimate, and length varies with tracking, filters, and data payloads.",
       ),
     );
   }
@@ -304,6 +315,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
           ? "Path or query contains an encoded null, line feed, or carriage return."
           : "Path or query contains a double-encoded dot, slash, backslash, or @ separator.",
         "Do not open the link if it was unexpected; verify the intended destination through a trusted route.",
+        "Percent-encoding has many legitimate uses, and this check cannot confirm that another system would misparse the input.",
       ),
     );
   } else if (
@@ -318,6 +330,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "A large share of the path or query uses percent-encoding, which makes the visible address harder to review. Encoding also has many legitimate uses.",
         `${encodedCharacters.length} encoded octets in ${pathAndQuery.length} path/query characters.`,
         "Use a trusted source to confirm the destination instead of trying to interpret an unfamiliar encoded link.",
+        "Heavy encoding can result from ordinary parameters, non-Latin text, or signed data and is not harmful on its own.",
       ),
     );
   }
@@ -331,6 +344,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "A percent sign in a URL escape is not followed by two hexadecimal digits. Different systems may handle malformed escapes inconsistently.",
         "An incomplete percent escape appears in the path or query; values are omitted.",
         "If the URL was unexpected, avoid opening it and request a clean link through a trusted channel.",
+        "Browsers usually recover from malformed escapes, and the input may simply be truncated or copied incorrectly.",
       ),
     );
   }
@@ -347,6 +361,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "The query contains a parameter name commonly associated with credentials or tokens. Values in URLs may be stored in browser history, logs, or referrer data.",
         `Parameter name: ${sensitiveParameter}; its value is not displayed.`,
         "Avoid sharing this URL. If it contains a live credential or token, use the service’s official process to replace or revoke it.",
+        "The parameter name does not reveal the value, and the value may be a non-sensitive placeholder.",
       ),
     );
   }
@@ -361,6 +376,7 @@ export function detectUrlFindings(parsed: ParsedUrlInput): UrlFinding[] {
         "A redirect-style query parameter contains an absolute HTTP(S) destination on a different hostname. Such parameters can be legitimate, but can also obscure where a user will end up.",
         `Parameter “${externalRedirect.parameter}” names hostname “${externalRedirect.hostname}”, different from “${hostname}”.`,
         "Check the final destination and avoid signing in after an unexpected redirect.",
+        "Redirect parameters are widely used for legitimate sign-in and navigation flows and do not mean the destination is harmful.",
       ),
     );
   }

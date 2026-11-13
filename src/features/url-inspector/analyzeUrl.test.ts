@@ -234,4 +234,30 @@ describe("analyzeUrl", () => {
       "high-concern",
     );
   });
+
+  it("attaches a structural anatomy to parsed URLs and none to invalid input", () => {
+    const parsed = analyzeUrl("https://docs.example.com/guide?lang=en");
+
+    expect(parsed.anatomy).not.toBeNull();
+    expect(parsed.anatomy?.subdomain).toBe("docs");
+    expect(parsed.anatomy?.registrableDomain).toBe("example.com");
+    expect(parsed.anatomy?.queryParameterNames).toEqual(["lang"]);
+    expect(analyzeUrl("example.com").anatomy).toBeNull();
+  });
+
+  it("provides a limitation for every structural finding", () => {
+    const samples = [
+      "http://example.com:8080/?redirect=https%3A%2F%2Foutside.example%2F",
+      "https://alice:secret@example.com/private",
+      "javascript:alert(1)",
+      "https://xn--pple-43d.com/login",
+      "https://202.10.10.10/path",
+    ];
+
+    for (const sample of samples) {
+      for (const finding of analyzeUrl(sample).findings) {
+        expect(finding.limitation.length).toBeGreaterThan(0);
+      }
+    }
+  });
 });
