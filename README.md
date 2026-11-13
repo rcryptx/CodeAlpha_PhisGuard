@@ -4,7 +4,7 @@
 
 PhisGuard is an educational cybersecurity and phishing-awareness platform designed to empower users to pause, inspect, and evaluate digital threats before taking action. Built with a Swiss Minimalist aesthetic supporting both Light Mode and Dark Mode, PhisGuard combines privacy-first client-side tools with server-side AI integration to deliver a practical and reliable learning experience.
 
-Repository: [https://github.com/rcryptx/CodeAlpha_PhisGuard](https://github.com/rcryptx/CodeAlpha_PhisGuard)
+Repository: [https://github.com/rcryptx/PhisGuard-rcryptx-](https://github.com/rcryptx/PhisGuard-rcryptx-)
 
 ---
 
@@ -119,8 +119,8 @@ Repository: [https://github.com/rcryptx/CodeAlpha_PhisGuard](https://github.com/
 ### Installation
 
 ```bash
-git clone https://github.com/rcryptx/CodeAlpha_PhisGuard.git
-cd CodeAlpha_PhisGuard
+git clone https://github.com/rcryptx/PhisGuard-rcryptx-.git
+cd PhisGuard-rcryptx-
 npm install
 ```
 
