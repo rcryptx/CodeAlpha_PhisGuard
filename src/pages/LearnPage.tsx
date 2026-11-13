@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
 
 import { LessonCard } from "@/components/learning/LessonCard";
 import { PageMetadata } from "@/components/seo/PageMetadata";
@@ -80,14 +81,22 @@ export function LearnPage() {
               >
                 Search lessons
               </label>
-              <input
-                id="lesson-search"
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Try “email” or “password”"
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-slate-700 focus:ring-2 focus:ring-slate-300"
-              />
+              <div className="relative">
+                <Search
+                  aria-hidden="true"
+                  size={17}
+                  strokeWidth={1.75}
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
+                />
+                <input
+                  id="lesson-search"
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Try “email” or “password”"
+                  className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-slate-700 focus:ring-2 focus:ring-slate-300"
+                />
+              </div>
             </div>
           </div>
         </section>

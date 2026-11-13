@@ -45,8 +45,8 @@ Repository: [https://github.com/rcryptx/CodeAlpha_PhisGuard](https://github.com/
 
 7. **ZYNX AI Security Companion (`/zynx`)**
    - Educational AI assistant powered by Google Gemini (default: `gemini-3.6-flash`).
-   - Strict architectural boundaries: all Gemini API interactions execute server-side via a secure Node.js proxy or Vercel serverless function (`/api/zynx/chat` and `/api/zynx/status`).
-   - Safeguards: strict prompt sanitization, rate limiting, token bounding, and session-only context retention.
+   - Strict architectural boundaries: all Gemini API interactions use Google's official `@google/genai` SDK on the server via a secure Node.js proxy or Vercel serverless function (`/api/zynx/chat` and `/api/zynx/status`).
+   - Safeguards: validated request limits, rate limiting, bounded responses, and session-only context retention.
    - Graceful fallback: when unconfigured, the app presents a transparent setup requirement rather than fabricated answers.
 
 8. **Design & Theming**
@@ -63,7 +63,8 @@ Repository: [https://github.com/rcryptx/CodeAlpha_PhisGuard](https://github.com/
 
 - **Frontend**: React 19, TypeScript, Vite, Tailwind CSS (with `darkMode: "class"`), React Router 7.
 - **Backend / API**: Node.js HTTP server + Vercel Serverless Functions (`api/zynx/`).
-- **AI Integration**: Google Gemini API via server-side HTTP calls (`gemini-3.6-flash`).
+- **AI Integration**: Google Gemini API via the official server-side `@google/genai` SDK (`gemini-3.6-flash`).
+- **Icons**: Lucide React (`lucide-react`) with a consistent stroke and sizing system.
 - **Testing & Quality**: Vitest, React Testing Library, JSDOM, Node.js Test Runner, Oxlint, Prettier.
 
 ---
@@ -84,7 +85,7 @@ Repository: [https://github.com/rcryptx/CodeAlpha_PhisGuard](https://github.com/
                         |  (server/zynxService.ts)    |
                         +--------------+---------------+
                                        |
-                        Direct Server-to-Server HTTPS
+                        Server-side Google Gen AI SDK
                         (x-goog-api-key: GEMINI_API_KEY)
                                        |
                         +--------------v---------------+

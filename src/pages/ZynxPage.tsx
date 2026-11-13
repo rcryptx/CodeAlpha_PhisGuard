@@ -1,3 +1,5 @@
+import { Bot } from "lucide-react";
+
 import { PageMetadata } from "@/components/seo/PageMetadata";
 import { useZynx } from "@/features/zynx/useZynx";
 
@@ -12,7 +14,7 @@ export function ZynxPage() {
         path="/zynx"
       />
       <div className="mx-auto max-w-4xl">
-        <header className="border-b border-slate-200 pb-7">
+        <header className="border-b border-slate-200 pb-7 dark:border-slate-800">
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
             Optional AI learning companion
           </p>
@@ -53,9 +55,10 @@ export function ZynxPage() {
           <button
             type="button"
             onClick={openAssistant}
-            className="mt-6 min-h-11 rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-800 bg-slate-900 px-5 py-2 text-sm font-medium text-white hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-slate-200 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
           >
-            Open ZYNX assistant
+            <Bot aria-hidden="true" size={17} strokeWidth={1.75} />
+            Start a conversation
           </button>
         </section>
       </div>

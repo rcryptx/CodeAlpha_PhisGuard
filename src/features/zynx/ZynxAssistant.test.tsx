@@ -34,7 +34,12 @@ describe("application-wide ZYNX assistant", () => {
     vi.stubGlobal("fetch", fetchMock);
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Ask ZYNX" }));
+    const launcher = screen.getByRole("button", {
+      name: "Open ZYNX assistant",
+    });
+    expect(launcher).toHaveAttribute("title", "Open ZYNX assistant");
+    fireEvent.click(launcher);
+    expect(screen.queryByText("Ask ZYNX")).not.toBeInTheDocument();
     expect(await screen.findByText(/Hi, I’m ZYNX/)).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", { name: "Your name or nickname" }),
@@ -66,7 +71,9 @@ describe("application-wide ZYNX assistant", () => {
       vi.fn().mockResolvedValue(jsonResponse({ configured: false })),
     );
     const view = renderApp();
-    fireEvent.click(screen.getByRole("button", { name: "Ask ZYNX" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Open ZYNX assistant" }),
+    );
     await screen.findByText(/Hi, I’m ZYNX/);
     fireEvent.change(
       screen.getByRole("textbox", { name: "Your name or nickname" }),
@@ -106,7 +113,9 @@ describe("application-wide ZYNX assistant", () => {
     vi.stubGlobal("fetch", fetchMock);
     renderApp("/inspector");
 
-    fireEvent.click(screen.getByRole("button", { name: "Ask ZYNX" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Open ZYNX assistant" }),
+    );
     await screen.findByRole("textbox", { name: "Your name or nickname" });
     fireEvent.change(
       screen.getByRole("textbox", { name: "Your name or nickname" }),
@@ -194,6 +203,52 @@ describe("application-wide ZYNX assistant", () => {
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
   });
 
+  it("sends the visible conversation history on follow-up messages", async () => {
+    window.localStorage.setItem(
+      MEMORY_KEY,
+      JSON.stringify({ displayName: "Ari", consentToMemory: true }),
+    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse({ configured: true }))
+      .mockResolvedValueOnce(jsonResponse({ reply: "A deceptive message." }))
+      .mockResolvedValueOnce(
+        jsonResponse({ reply: "Check the sender and verify independently." }),
+      );
+    vi.stubGlobal("fetch", fetchMock);
+    renderApp();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Open ZYNX assistant" }),
+    );
+    const messageBox = await screen.findByRole("textbox", {
+      name: "Message ZYNX",
+    });
+    fireEvent.change(messageBox, {
+      target: { value: "What is phishing?" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    await screen.findByText("A deceptive message.");
+
+    fireEvent.change(messageBox, {
+      target: { value: "How do I recognize it?" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Send" }));
+    await screen.findByText("Check the sender and verify independently.");
+
+    const followUpRequest = JSON.parse(
+      fetchMock.mock.calls[2][1].body as string,
+    ) as { messages: Array<{ role: string; content: string }> };
+    expect(followUpRequest.messages).toEqual([
+      { role: "user", content: "What is phishing?" },
+      { role: "model", content: "A deceptive message." },
+      { role: "user", content: "How do I recognize it?" },
+    ]);
+    expect(
+      document.querySelectorAll("#zynx-assistant-panel time"),
+    ).toHaveLength(4);
+  });
+
   it("clears session chat without persisting conversation history", async () => {
     const fetchMock = vi
       .fn()
@@ -202,7 +257,9 @@ describe("application-wide ZYNX assistant", () => {
     vi.stubGlobal("fetch", fetchMock);
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Ask ZYNX" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: "Open ZYNX assistant" }),
+    );
     await screen.findByRole("textbox", { name: "Your name or nickname" });
     fireEvent.change(
       screen.getByRole("textbox", { name: "Your name or nickname" }),
