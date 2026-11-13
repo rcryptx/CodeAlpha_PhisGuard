@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, vi } from "vitest";
 
@@ -87,5 +87,70 @@ describe("InspectorForm", () => {
     expect(
       screen.getByText("https://example.invalid/[path omitted]"),
     ).toBeInTheDocument();
+  });
+
+  it("renders a URL anatomy breakdown and masks query values", () => {
+    render(
+      <MemoryRouter>
+        <InspectorForm />
+      </MemoryRouter>,
+    );
+
+    fireEvent.change(screen.getByRole("textbox", { name: "URL to analyze" }), {
+      target: {
+        value: "https://login.accounts.example.com/settings?tab=security#top",
+      },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Analyze URL" }));
+
+    expect(
+      screen.getByRole("heading", { name: "URL anatomy" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("login.accounts")).toBeInTheDocument();
+    expect(screen.getByText("example.com")).toBeInTheDocument();
+    expect(screen.getByText("?tab=•••")).toBeInTheDocument();
+    expect(screen.getByText("#(present)")).toBeInTheDocument();
+    expect(screen.queryByText("security")).toBeNull();
+  });
+
+  it("copies a report that omits sensitive values", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+
+    render(
+      <MemoryRouter>
+        <InspectorForm />
+      </MemoryRouter>,
+    );
+
+    fireEvent.change(screen.getByRole("textbox", { name: "URL to analyze" }), {
+      target: { value: "https://example.com/reset?access_token=topsecret" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Analyze URL" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy report" }));
+
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = writeText.mock.calls[0][0] as string;
+    expect(copied).toContain("PhisGuard - URL analysis report");
+    expect(copied).toContain("access_token");
+    expect(copied).not.toContain("topsecret");
+  });
+
+  it("explains the limitation of each finding", () => {
+    render(
+      <MemoryRouter>
+        <InspectorForm />
+      </MemoryRouter>,
+    );
+
+    fireEvent.change(screen.getByRole("textbox", { name: "URL to analyze" }), {
+      target: { value: "http://example.com" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Analyze URL" }));
+
+    expect(screen.getByText("Limitation")).toBeInTheDocument();
   });
 });

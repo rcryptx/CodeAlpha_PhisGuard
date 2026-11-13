@@ -1,3 +1,4 @@
+import { buildUrlAnatomy } from "./anatomy";
 import { classifyRisk } from "./classifyRisk";
 import { parseUrlInput, sanitizeUrlForDisplay } from "./parseUrl";
 import { detectUrlFindings } from "./rules";
@@ -16,6 +17,7 @@ export function analyzeUrl(input: string): UrlAnalysisResult {
       protocol: parsedResult.protocol ? `${parsedResult.protocol}:` : "",
       risk: "invalid-url",
       findings: [],
+      anatomy: null,
       error: parsedResult.error,
     };
   }
@@ -28,5 +30,6 @@ export function analyzeUrl(input: string): UrlAnalysisResult {
     protocol: parsed.url.protocol,
     risk: classifyRisk(findings),
     findings,
+    anatomy: buildUrlAnatomy(parsed),
   };
 }
