@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 
+import { getGlossaryTerm } from "@/features/glossary/glossaryData";
 import { lessonBySlug } from "@/features/learning/curriculum";
 
 import { getZynxErrorMessage, ZYNX_MAX_MESSAGE_LENGTH } from "./zynxApi";
@@ -66,6 +67,11 @@ function describeCurrentPage(pathname: string) {
   if (pathname === "/progress") return "Progress";
   if (pathname === "/resources") return "Resources";
   if (pathname === "/zynx") return "ZYNX";
+  if (pathname === "/glossary") return "Glossary";
+  if (pathname.startsWith("/glossary/")) {
+    const term = getGlossaryTerm(pathname.slice("/glossary/".length));
+    return term ? `Glossary: ${term.term}` : "Glossary";
+  }
   if (pathname.startsWith("/learn/")) {
     return lessonBySlug(pathname.slice("/learn/".length))
       ? "Lesson page"

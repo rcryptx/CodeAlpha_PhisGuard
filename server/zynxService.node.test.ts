@@ -89,6 +89,68 @@ test("validates and normalizes chat history while rejecting invalid requests", (
   );
 });
 
+test("accepts glossary page contexts and rejects unsafe term names", () => {
+  for (const pageContext of [
+    "Glossary",
+    "Glossary: Phishing",
+    "Glossary: Multi-factor authentication (MFA)",
+  ]) {
+    const result = validateChatRequest({
+      messages: [{ role: "user", content: "Explain this term." }],
+      pageContext,
+    });
+    assert.equal(result.valid, true, pageContext);
+    if (result.valid) assert.equal(result.value.pageContext, pageContext);
+  }
+
+  for (const pageContext of [
+    "Glossary: ",
+    "Glossary: <script>",
+    "Glossary: Bad\nterm",
+    `Glossary: ${"a".repeat(61)}`,
+    "Glossarys",
+    "Not a real page",
+  ]) {
+    const result = validateChatRequest({
+      messages: [{ role: "user", content: "Explain this term." }],
+      pageContext,
+    });
+    assert.equal(result.valid, false, pageContext);
+  }
+});
+
+test("names the glossary term in the system instruction for term pages", async () => {
+  let observedBody: unknown;
+  await generateGeminiReply(
+    {
+      messages: [{ role: "user", content: "What is this term?" }],
+      pageContext: "Glossary: Phishing",
+    },
+    {
+      apiKey: "test-only-api-key",
+      fetcher: async (_input, init) => {
+        observedBody = JSON.parse(String(init?.body));
+        return new Response(
+          JSON.stringify({
+            candidates: [{ content: { parts: [{ text: "A note." }] } }],
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      },
+    },
+  );
+
+  const text = (
+    observedBody as {
+      systemInstruction: { parts: Array<{ text: string }> };
+    }
+  ).systemInstruction.parts[0].text;
+  assert.match(
+    text,
+    /Glossary area of PhisGuard, reading the entry for "Phishing"/,
+  );
+});
+
 test("sends a bounded Gemini request using a server-only authorization header", async () => {
   let observedUrl = "";
   let observedInit: RequestInit | undefined;

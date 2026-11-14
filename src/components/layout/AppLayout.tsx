@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
   Bot,
+  BookMarked,
   BookOpen,
   ChartNoAxesColumnIncreasing,
   ChevronDown,
@@ -31,6 +32,7 @@ const navIcons: Record<(typeof navItems)[number]["to"], LucideIcon> = {
   "/flashcards": Layers,
   "/assessments": ClipboardCheck,
   "/progress": ChartNoAxesColumnIncreasing,
+  "/glossary": BookMarked,
   "/resources": LibraryBig,
   "/zynx": Bot,
 };
