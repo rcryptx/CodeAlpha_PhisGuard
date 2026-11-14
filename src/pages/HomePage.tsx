@@ -169,10 +169,9 @@ export function HomePage() {
               </h2>
             </div>
             <p className="max-w-md text-sm leading-6 text-slate-600 dark:text-slate-300">
-              The learning centre, URL Inspector, Practice Lab, Glossary,
-              Resources, Assessments, and local lesson progress are available
-              now. ZYNX requires server-side Gemini configuration; other areas
-              are still being developed.
+              The learning centre, URL Inspector, Practice Lab, Flashcards,
+              Glossary, Resources, Assessments, and local lesson progress are
+              available now. ZYNX requires server-side Gemini configuration.
             </p>
           </div>
           <div className="mt-6 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -197,6 +196,8 @@ export function HomePage() {
                             ? "Available now · curated guidance"
                             : tool.to === "/glossary"
                               ? "Available now · searchable A–Z"
+                              : tool.to === "/flashcards"
+                                ? "Available now · lesson decks"
                               : tool.to === "/zynx"
                               ? "Gemini server setup required"
                               : tool.to === "/assessments"
