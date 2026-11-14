@@ -12,6 +12,7 @@ describe("glossary storage parsing", () => {
     expect(parseStoredIdList(null, { label: "bookmarks" })).toEqual({
       ids: [],
       storageNotice: null,
+      trusted: true,
     });
   });
 
@@ -24,6 +25,7 @@ describe("glossary storage parsing", () => {
     expect(parseStoredIdList(raw, { label: "bookmarks" })).toEqual({
       ids: ["phishing", "firewall"],
       storageNotice: null,
+      trusted: true,
     });
     expect(
       parseStoredIdList(serializeRecentTerms(["phishing"]), {
@@ -36,6 +38,7 @@ describe("glossary storage parsing", () => {
     const parsed = parseStoredIdList("{not json", { label: "bookmarks" });
     expect(parsed.ids).toEqual([]);
     expect(parsed.storageNotice).toMatch(/could not be read/);
+    expect(parsed.trusted).toBe(false);
   });
 
   it("rejects unsupported formats", () => {
@@ -45,6 +48,7 @@ describe("glossary storage parsing", () => {
     );
     expect(parsed.ids).toEqual([]);
     expect(parsed.storageNotice).toMatch(/unsupported format/);
+    expect(parsed.trusted).toBe(false);
   });
 
   it("drops unknown and duplicate ids with a single notice", () => {

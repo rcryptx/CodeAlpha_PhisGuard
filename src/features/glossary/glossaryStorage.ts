@@ -15,6 +15,12 @@ export interface StoredIdList {
 export interface ParsedIdList {
   ids: string[];
   storageNotice: string | null;
+  /**
+   * Whether the stored value was successfully interpreted and may therefore be
+   * safely replaced. Unreadable or unsupported-version data is reported as
+   * untrusted so callers can avoid overwriting data they do not understand.
+   */
+  trusted: boolean;
 }
 
 function serialize(ids: string[]): StoredIdList {
@@ -41,7 +47,7 @@ export function parseStoredIdList(
   options: { limit?: number; label: string },
 ): ParsedIdList {
   if (raw === null) {
-    return { ids: [], storageNotice: null };
+    return { ids: [], storageNotice: null, trusted: true };
   }
 
   let parsed: unknown;
@@ -51,6 +57,7 @@ export function parseStoredIdList(
     return {
       ids: [],
       storageNotice: `Saved ${options.label} could not be read, so it is starting empty. Existing browser data was left unchanged.`,
+      trusted: false,
     };
   }
 
@@ -65,6 +72,7 @@ export function parseStoredIdList(
     return {
       ids: [],
       storageNotice: `Saved ${options.label} uses an unsupported format, so it is starting empty. The stored data was left unchanged.`,
+      trusted: false,
     };
   }
 
@@ -93,5 +101,6 @@ export function parseStoredIdList(
       discarded > 0
         ? `${discarded} invalid saved ${options.label} entr${discarded === 1 ? "y was" : "ies were"} ignored.`
         : null,
+    trusted: true,
   };
 }

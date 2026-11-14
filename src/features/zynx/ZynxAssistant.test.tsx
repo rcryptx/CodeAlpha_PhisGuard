@@ -152,6 +152,44 @@ describe("application-wide ZYNX assistant", () => {
     expect(window.localStorage.getItem(MEMORY_KEY)).toBeNull();
   });
 
+  it("sends glossary page context for directory and term routes", async () => {
+    for (const [path, expectedContext] of [
+      ["/glossary", "Glossary"],
+      ["/glossary/phishing", "Glossary: Phishing"],
+    ] as const) {
+      window.localStorage.setItem(
+        MEMORY_KEY,
+        JSON.stringify({ displayName: "Ali", consentToMemory: true }),
+      );
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValueOnce(jsonResponse({ configured: true }))
+        .mockResolvedValueOnce(jsonResponse({ reply: "A glossary note." }));
+      vi.stubGlobal("fetch", fetchMock);
+      const view = renderApp(path);
+
+      fireEvent.click(
+        screen.getByRole("button", { name: "Open ZYNX assistant" }),
+      );
+      const messageBox = await screen.findByRole("textbox", {
+        name: "Message ZYNX",
+      });
+      fireEvent.change(messageBox, {
+        target: { value: "What is this page about?" },
+      });
+      fireEvent.click(screen.getByRole("button", { name: "Send" }));
+      await screen.findByText("A glossary note.");
+
+      const requestBody = JSON.parse(
+        fetchMock.mock.calls[1][1].body as string,
+      ) as { pageContext: string };
+      expect(requestBody.pageContext).toBe(expectedContext);
+
+      view.unmount();
+      vi.unstubAllGlobals();
+    }
+  });
+
   it("shows configuration errors, supports retry, and keeps application routes usable", async () => {
     const fetchMock = vi
       .fn()
