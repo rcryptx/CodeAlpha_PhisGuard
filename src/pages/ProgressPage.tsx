@@ -85,7 +85,7 @@ export function ProgressPage() {
           </div>
           <progress
             aria-label="Overall lesson completion"
-            className="mt-5 h-2 w-full accent-slate-800"
+            className="mt-5 h-2 w-full accent-slate-800 dark:accent-slate-200"
             max={summary.totalLessons}
             value={summary.completedLessons}
           />
@@ -108,7 +108,7 @@ export function ProgressPage() {
             </p>
             <Link
               to="/learn"
-              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white dark:focus-visible:outline-slate-300"
             >
               Browse the learning centre
             </Link>
@@ -245,7 +245,7 @@ export function ProgressPage() {
             <button
               type="button"
               onClick={() => clearProgress()}
-              className="mt-3 inline-flex min-h-10 items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+              className="mt-3 inline-flex min-h-10 items-center justify-center rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 dark:focus-visible:outline-slate-300"
             >
               Reset local progress
             </button>

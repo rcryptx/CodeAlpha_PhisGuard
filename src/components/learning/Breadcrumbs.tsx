@@ -21,7 +21,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             {index > 0 && <span aria-hidden="true">/</span>}
             {item.to ? (
               <Link
-                className="rounded-sm underline-offset-4 hover:text-slate-900 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="rounded-sm underline-offset-4 hover:text-slate-900 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:hover:text-slate-200"
                 to={item.to}
               >
                 {item.label}

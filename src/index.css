@@ -131,4 +131,20 @@ input {
     ~ :not([hidden]) {
     border-color: #334155;
   }
+
+  /* Keep focus indicators visible on dark surfaces where a component sets a
+     dark outline color without a dark-mode counterpart. */
+  html.dark
+    [class~="focus-visible:outline-slate-700"]:focus-visible:not(
+      [class*="dark:focus-visible:outline-"]
+    ) {
+    outline-color: #cbd5e1;
+  }
+
+  html.dark
+    [class~="focus-visible:outline-slate-800"]:focus-visible:not(
+      [class*="dark:focus-visible:outline-"]
+    ) {
+    outline-color: #cbd5e1;
+  }
 }

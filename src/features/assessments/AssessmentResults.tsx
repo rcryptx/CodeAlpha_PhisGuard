@@ -65,7 +65,7 @@ function AnswerReview({
         {lesson && (
           <Link
             to={`/learn/${lesson.slug}`}
-            className="mt-4 inline-flex text-sm font-medium text-slate-800 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="mt-4 inline-flex text-sm font-medium text-slate-800 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:hover:text-white"
           >
             Revisit: {lesson.title}
           </Link>
@@ -247,7 +247,7 @@ export function AssessmentResults({
         <button
           type="button"
           onClick={onRetry}
-          className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white dark:focus-visible:outline-slate-300"
         >
           Retry assessment
         </button>
