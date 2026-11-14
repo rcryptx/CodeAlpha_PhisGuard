@@ -50,7 +50,7 @@ export function AssessmentSession({
         <button
           type="button"
           onClick={onCancel}
-          className="mt-5 rounded-full border border-slate-300 px-5 py-2 text-sm font-medium text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="mt-5 rounded-full border border-slate-300 px-5 py-2 text-sm font-medium text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:focus-visible:outline-slate-300"
         >
           Return to assessments
         </button>
@@ -85,7 +85,7 @@ export function AssessmentSession({
         <button
           type="button"
           onClick={onCancel}
-          className="mb-4 inline-flex min-h-10 items-center text-sm font-medium text-slate-700 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="mb-4 inline-flex min-h-10 items-center text-sm font-medium text-slate-700 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:hover:text-white"
         >
           ← All assessments
         </button>
@@ -120,7 +120,7 @@ export function AssessmentSession({
         </div>
         <progress
           aria-label="Question position"
-          className="mt-3 h-2 w-full accent-slate-800"
+          className="mt-3 h-2 w-full accent-slate-800 dark:accent-slate-200"
           max={questions.length}
           value={currentIndex + 1}
         />
@@ -140,10 +140,10 @@ export function AssessmentSession({
                     }}
                     className={`min-h-10 min-w-10 rounded-full border px-3 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 ${
                       index === currentIndex
-                        ? "border-slate-800 bg-slate-800 text-white"
+                        ? "border-slate-800 bg-slate-800 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900"
                         : isAnswered
-                          ? "border-slate-500 bg-slate-100 text-slate-900"
-                          : "border-slate-300 bg-white text-slate-700"
+                          ? "border-slate-500 bg-slate-100 text-slate-900 dark:border-slate-500 dark:bg-slate-700 dark:text-slate-100"
+                          : "border-slate-300 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
                     }`}
                   >
                     {index + 1}
@@ -192,7 +192,7 @@ export function AssessmentSession({
           <button
             type="button"
             onClick={requestSubmit}
-            className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+            className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white dark:focus-visible:outline-slate-300"
           >
             Submit assessment
           </button>
@@ -225,7 +225,7 @@ export function AssessmentSession({
             <button
               type="button"
               onClick={submit}
-              className="inline-flex min-h-10 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-4 py-2 text-sm font-medium text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="inline-flex min-h-10 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-4 py-2 text-sm font-medium text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900"
             >
               Submit with unanswered questions
             </button>

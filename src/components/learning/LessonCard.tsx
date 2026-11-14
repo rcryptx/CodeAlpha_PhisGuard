@@ -15,7 +15,7 @@ export function LessonCard({
 }: LessonCardProps) {
   return (
     <Link
-      className="group flex min-h-40 flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-700"
+      className="group flex min-h-40 flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-700 dark:hover:border-slate-600"
       to={`/learn/${lesson.slug}`}
     >
       <div>

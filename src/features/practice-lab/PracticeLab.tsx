@@ -96,7 +96,7 @@ function ScenarioSelector({
           <button
             type="button"
             onClick={onShowSummary}
-            className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+            className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white dark:focus-visible:outline-slate-300"
           >
             View session summary
           </button>
@@ -147,7 +147,7 @@ function ScenarioView({
       <button
         type="button"
         onClick={onBack}
-        className="mb-5 inline-flex min-h-10 items-center text-sm font-medium text-slate-700 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+        className="mb-5 inline-flex min-h-10 items-center text-sm font-medium text-slate-700 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:hover:text-white"
       >
         ← All scenarios
       </button>
@@ -197,7 +197,7 @@ function ScenarioView({
               {scenario.decisions.map((decision) => (
                 <label
                   key={decision.id}
-                  className="flex cursor-pointer gap-3 rounded-xl border border-slate-200 p-4 text-sm leading-6 text-slate-800 transition hover:border-slate-400 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-slate-700 has-[:checked]:border-slate-500 has-[:checked]:bg-slate-50"
+                  className="flex cursor-pointer gap-3 rounded-xl border border-slate-200 p-4 text-sm leading-6 text-slate-800 transition hover:border-slate-400 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-slate-700 has-[:checked]:border-slate-500 has-[:checked]:bg-slate-50 dark:hover:border-slate-500 dark:has-[:focus-visible]:outline-slate-300 dark:has-[:checked]:border-slate-300 dark:has-[:checked]:bg-slate-800"
                 >
                   <input
                     type="radio"
@@ -205,7 +205,7 @@ function ScenarioView({
                     value={decision.id}
                     checked={selectedDecisionId === decision.id}
                     onChange={() => onSelectDecision(decision.id)}
-                    className="mt-1 size-4 shrink-0 accent-slate-800"
+                    className="mt-1 size-4 shrink-0 accent-slate-800 dark:accent-slate-200"
                   />
                   <span>{decision.label}</span>
                 </label>
@@ -216,7 +216,7 @@ function ScenarioView({
             <button
               type="submit"
               disabled={!selectedDecisionId}
-              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 disabled:cursor-not-allowed disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500"
+              className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 disabled:cursor-not-allowed disabled:border-slate-300 disabled:bg-slate-200 disabled:text-slate-500 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white dark:focus-visible:outline-slate-300 dark:disabled:border-slate-700 dark:disabled:bg-slate-800 dark:disabled:text-slate-400"
             >
               Submit decision
             </button>
@@ -230,7 +230,7 @@ function ScenarioView({
               <button
                 type="button"
                 onClick={onNext}
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-800 bg-slate-800 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white dark:focus-visible:outline-slate-300"
               >
                 Next scenario
               </button>

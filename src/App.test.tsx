@@ -11,6 +11,14 @@ import App from "./App";
 import { navItems } from "./config/site";
 import { lessons } from "./features/learning/curriculum";
 
+// Routes other than the home and not-found screens are code-split and render
+// asynchronously, so the assertions below wait for the content to appear.
+async function waitForRouteReady() {
+  await waitFor(() =>
+    expect(screen.queryByText(/^Loading/)).not.toBeInTheDocument(),
+  );
+}
+
 describe("PhisGuard routes", () => {
   it("renders the home page at the app root", () => {
     render(
@@ -65,7 +73,7 @@ describe("PhisGuard routes", () => {
     expect(screen.getByText("Page not found")).toBeInTheDocument();
   });
 
-  it("renders every public route from navigation", () => {
+  it("renders every public route from navigation", async () => {
     for (const item of navItems) {
       const { unmount } = render(
         <MemoryRouter initialEntries={[item.to]}>
@@ -73,13 +81,14 @@ describe("PhisGuard routes", () => {
         </MemoryRouter>,
       );
 
+      await waitForRouteReady();
       expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
       expect(screen.getByRole("main")).toBeInTheDocument();
       unmount();
     }
   });
 
-  it("integrates the local URL inspector at its public route", () => {
+  it("integrates the local URL inspector at its public route", async () => {
     render(
       <MemoryRouter initialEntries={["/inspector"]}>
         <App />
@@ -87,7 +96,7 @@ describe("PhisGuard routes", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "URL Inspector" }),
+      await screen.findByRole("heading", { level: 1, name: "URL Inspector" }),
     ).toBeInTheDocument();
 
     fireEvent.change(screen.getByRole("textbox", { name: "URL to analyze" }), {
@@ -102,14 +111,14 @@ describe("PhisGuard routes", () => {
     ).toBeInTheDocument();
   });
 
-  it("integrates the Resources library and ZYNX information page", () => {
+  it("integrates the Resources library and ZYNX information page", async () => {
     const resources = render(
       <MemoryRouter initialEntries={["/resources"]}>
         <App />
       </MemoryRouter>,
     );
     expect(
-      screen.getByRole("heading", { name: "Learning resources" }),
+      await screen.findByRole("heading", { name: "Learning resources" }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /Recognize and report phishing/ }),
@@ -124,13 +133,15 @@ describe("PhisGuard routes", () => {
         <App />
       </MemoryRouter>,
     );
-    expect(screen.getByRole("heading", { name: "ZYNX" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "ZYNX" }),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Open ZYNX assistant" }),
     ).toBeInTheDocument();
   });
 
-  it("integrates the interactive Practice Lab at its public route", () => {
+  it("integrates the interactive Practice Lab at its public route", async () => {
     render(
       <MemoryRouter initialEntries={["/practice"]}>
         <App />
@@ -138,7 +149,7 @@ describe("PhisGuard routes", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Practice Lab" }),
+      await screen.findByRole("heading", { level: 1, name: "Practice Lab" }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Choose a scenario" }),
@@ -150,7 +161,7 @@ describe("PhisGuard routes", () => {
     ).toBeInTheDocument();
   });
 
-  it("integrates the assessment selection at its public route", () => {
+  it("integrates the assessment selection at its public route", async () => {
     render(
       <MemoryRouter initialEntries={["/assessments"]}>
         <App />
@@ -158,7 +169,7 @@ describe("PhisGuard routes", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Assessments" }),
+      await screen.findByRole("heading", { level: 1, name: "Assessments" }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Full assessment" }),
@@ -173,7 +184,7 @@ describe("PhisGuard routes", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders a lesson at its stable URL with working next-lesson navigation", () => {
+  it("renders a lesson at its stable URL with working next-lesson navigation", async () => {
     render(
       <MemoryRouter initialEntries={["/learn/introduction-to-phishing"]}>
         <App />
@@ -181,7 +192,7 @@ describe("PhisGuard routes", () => {
     );
 
     expect(
-      screen.getByRole("heading", {
+      await screen.findByRole("heading", {
         level: 1,
         name: "Introduction to phishing",
       }),
@@ -195,7 +206,7 @@ describe("PhisGuard routes", () => {
     expect(nextLessonLink).toHaveAttribute("href", "/learn/email-phishing");
     fireEvent.click(nextLessonLink);
     expect(
-      screen.getByRole("heading", { level: 1, name: "Email phishing" }),
+      await screen.findByRole("heading", { level: 1, name: "Email phishing" }),
     ).toBeInTheDocument();
 
     expect(
@@ -222,7 +233,7 @@ describe("PhisGuard routes", () => {
     });
   });
 
-  it("provides a responsive navigation menu that can be opened and closed", () => {
+  it("provides a responsive navigation menu that can be opened and closed", async () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <App />
@@ -249,14 +260,14 @@ describe("PhisGuard routes", () => {
       "false",
     );
     expect(
-      screen.getByRole("heading", {
+      await screen.findByRole("heading", {
         level: 1,
         name: "Learn to spot the signal.",
       }),
     ).toBeInTheDocument();
   });
 
-  it("shows a useful recovery path for unknown lesson slugs", () => {
+  it("shows a useful recovery path for unknown lesson slugs", async () => {
     render(
       <MemoryRouter initialEntries={["/learn/not-a-lesson"]}>
         <App />
@@ -264,20 +275,24 @@ describe("PhisGuard routes", () => {
     );
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Lesson not found" }),
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "Lesson not found",
+      }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Browse all lessons" }),
     ).toHaveAttribute("href", "/learn");
   });
 
-  it("lists every lesson from the curriculum on the learning centre", () => {
+  it("lists every lesson from the curriculum on the learning centre", async () => {
     render(
       <MemoryRouter initialEntries={["/learn"]}>
         <App />
       </MemoryRouter>,
     );
 
+    await waitForRouteReady();
     for (const lesson of lessons) {
       const lessonLink = screen.getByRole("link", {
         name: (_name, element) =>
@@ -287,14 +302,16 @@ describe("PhisGuard routes", () => {
     }
   });
 
-  it("filters lessons by topic and reports an empty search result", () => {
+  it("filters lessons by topic and reports an empty search result", async () => {
     render(
       <MemoryRouter initialEntries={["/learn"]}>
         <App />
       </MemoryRouter>,
     );
 
-    const search = screen.getByRole("searchbox", { name: "Search lessons" });
+    const search = await screen.findByRole("searchbox", {
+      name: "Search lessons",
+    });
     fireEvent.change(search, { target: { value: "smishing" } });
     expect(
       screen.getByRole("link", { name: /SMS phishing \(smishing\)/ }),

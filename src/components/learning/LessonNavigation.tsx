@@ -15,7 +15,7 @@ export function LessonNavigation({ previous, next }: LessonNavigationProps) {
     >
       {previous ? (
         <Link
-          className="rounded-xl border border-slate-200 p-4 transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+          className="rounded-xl border border-slate-200 p-4 transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:hover:border-slate-600"
           to={`/learn/${previous.slug}`}
         >
           <span className="block text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
@@ -27,7 +27,7 @@ export function LessonNavigation({ previous, next }: LessonNavigationProps) {
         </Link>
       ) : (
         <Link
-          className="rounded-xl border border-slate-200 p-4 transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700"
+          className="rounded-xl border border-slate-200 p-4 transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:hover:border-slate-600"
           to="/learn"
         >
           <span className="block text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
@@ -40,7 +40,7 @@ export function LessonNavigation({ previous, next }: LessonNavigationProps) {
       )}
       {next ? (
         <Link
-          className="rounded-xl border border-slate-200 p-4 text-left transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 sm:text-right"
+          className="rounded-xl border border-slate-200 p-4 text-left transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:hover:border-slate-600 sm:text-right"
           to={`/learn/${next.slug}`}
         >
           <span className="block text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
@@ -52,7 +52,7 @@ export function LessonNavigation({ previous, next }: LessonNavigationProps) {
         </Link>
       ) : (
         <Link
-          className="rounded-xl border border-slate-200 p-4 text-left transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 sm:text-right"
+          className="rounded-xl border border-slate-200 p-4 text-left transition hover:border-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:hover:border-slate-600 sm:text-right"
           to="/learn"
         >
           <span className="block text-xs font-medium uppercase tracking-[0.16em] text-slate-500">

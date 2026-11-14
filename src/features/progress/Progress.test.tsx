@@ -24,7 +24,7 @@ beforeEach(() => {
 });
 
 describe("lesson progress experience", () => {
-  it("shows an empty dashboard and does not count merely opening a lesson", () => {
+  it("shows an empty dashboard and does not count merely opening a lesson", async () => {
     render(
       <MemoryRouter initialEntries={["/progress"]}>
         <App />
@@ -32,7 +32,7 @@ describe("lesson progress experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "A fresh place to begin" }),
+      await screen.findByRole("heading", { name: "A fresh place to begin" }),
     ).toBeInTheDocument();
     expect(screen.getByText("0%")).toBeInTheDocument();
     expect(
@@ -43,18 +43,18 @@ describe("lesson progress experience", () => {
       screen.getByRole("link", { name: "Browse the learning centre" }),
     );
     fireEvent.click(
-      screen.getByRole("link", {
+      await screen.findByRole("link", {
         name: (_name, element) =>
           element?.textContent?.includes(lessons[0].title) ?? false,
       }),
     );
     expect(
-      screen.getByRole("button", { name: "Mark lesson complete" }),
+      await screen.findByRole("button", { name: "Mark lesson complete" }),
     ).toBeInTheDocument();
     expect(window.localStorage.getItem(PROGRESS_STORAGE_KEY)).toBeNull();
   });
 
-  it("marks a lesson complete once, reflects it in the curriculum, and supports reopening", () => {
+  it("marks a lesson complete once, reflects it in the curriculum, and supports reopening", async () => {
     render(
       <MemoryRouter initialEntries={[`/learn/${lessons[0].slug}`]}>
         <App />
@@ -62,7 +62,7 @@ describe("lesson progress experience", () => {
     );
 
     fireEvent.click(
-      screen.getByRole("button", { name: "Mark lesson complete" }),
+      await screen.findByRole("button", { name: "Mark lesson complete" }),
     );
     const saved = JSON.parse(
       window.localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null",
@@ -83,7 +83,7 @@ describe("lesson progress experience", () => {
       screen.getByRole("link", { name: /Next lesson.*Email phishing/ }),
     );
     expect(
-      screen.getByRole("button", { name: "Mark lesson complete" }),
+      await screen.findByRole("button", { name: "Mark lesson complete" }),
     ).toBeInTheDocument();
     fireEvent.click(
       screen.getByRole("link", {
@@ -91,7 +91,7 @@ describe("lesson progress experience", () => {
       }),
     );
     expect(
-      screen.getByRole("button", { name: "Mark as incomplete" }),
+      await screen.findByRole("button", { name: "Mark as incomplete" }),
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Mark as incomplete" }));
@@ -103,14 +103,14 @@ describe("lesson progress experience", () => {
     ).toBeInTheDocument();
   });
 
-  it("reloads completion state from local storage", () => {
+  it("reloads completion state from local storage", async () => {
     const { unmount } = render(
       <MemoryRouter initialEntries={[`/learn/${lessons[0].slug}`]}>
         <App />
       </MemoryRouter>,
     );
     fireEvent.click(
-      screen.getByRole("button", { name: "Mark lesson complete" }),
+      await screen.findByRole("button", { name: "Mark lesson complete" }),
     );
 
     const persistedValue = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
@@ -135,11 +135,11 @@ describe("lesson progress experience", () => {
       </MemoryRouter>,
     );
     expect(
-      screen.getByRole("button", { name: "Mark as incomplete" }),
+      await screen.findByRole("button", { name: "Mark as incomplete" }),
     ).toBeInTheDocument();
   });
 
-  it("shows a completed lesson in the Learning Centre", () => {
+  it("shows a completed lesson in the Learning Centre", async () => {
     window.localStorage.setItem(
       PROGRESS_STORAGE_KEY,
       JSON.stringify({
@@ -165,7 +165,7 @@ describe("lesson progress experience", () => {
         <App />
       </MemoryRouter>,
     );
-    expect(screen.getByText("Completed")).toBeInTheDocument();
+    expect(await screen.findByText("Completed")).toBeInTheDocument();
     expect(
       screen.getByRole("link", {
         name: (_name, element) =>
@@ -174,7 +174,7 @@ describe("lesson progress experience", () => {
     ).toHaveAttribute("href", `/learn/${lessons[0].slug}`);
   });
 
-  it("renders dashboard counts, recent activity, and links to completed lessons", () => {
+  it("renders dashboard counts, recent activity, and links to completed lessons", async () => {
     window.localStorage.setItem(
       PROGRESS_STORAGE_KEY,
       JSON.stringify({
@@ -201,7 +201,7 @@ describe("lesson progress experience", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText("8%")).toBeInTheDocument();
+    expect(await screen.findByText("8%")).toBeInTheDocument();
     expect(screen.getByText(/1\s+lesson completed/)).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Recently completed" }),
@@ -217,11 +217,11 @@ describe("lesson progress experience", () => {
 
     fireEvent.click(screen.getByRole("link", { name: lessons[0].title }));
     expect(
-      screen.getByRole("button", { name: "Mark as incomplete" }),
+      await screen.findByRole("button", { name: "Mark as incomplete" }),
     ).toBeInTheDocument();
   });
 
-  it("shows a clear notice when saved data contains unknown or invalid lesson records", () => {
+  it("shows a clear notice when saved data contains unknown or invalid lesson records", async () => {
     window.localStorage.setItem(
       PROGRESS_STORAGE_KEY,
       JSON.stringify({
@@ -247,7 +247,7 @@ describe("lesson progress experience", () => {
         <App />
       </MemoryRouter>,
     );
-    expect(screen.getByRole("status")).toHaveTextContent(
+    expect(await screen.findByRole("status")).toHaveTextContent(
       "1 invalid or outdated saved progress record was ignored.",
     );
     expect(
@@ -255,7 +255,7 @@ describe("lesson progress experience", () => {
     ).toBeInTheDocument();
   });
 
-  it("allows clearing all saved progress locally", () => {
+  it("allows clearing all saved progress locally", async () => {
     window.localStorage.setItem(
       PROGRESS_STORAGE_KEY,
       JSON.stringify({
@@ -282,7 +282,7 @@ describe("lesson progress experience", () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText("8%")).toBeInTheDocument();
+    expect(await screen.findByText("8%")).toBeInTheDocument();
     expect(screen.getByText(/1\s+lesson completed/)).toBeInTheDocument();
     const resetButton = screen.getByRole("button", {
       name: "Reset local progress",

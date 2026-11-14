@@ -45,7 +45,7 @@ export function QuestionView({
           {question.options.map((option) => (
             <label
               key={option.id}
-              className="flex cursor-pointer gap-3 rounded-xl border border-slate-200 p-4 text-sm leading-6 text-slate-800 transition hover:border-slate-400 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-slate-700 has-[:checked]:border-slate-500 has-[:checked]:bg-slate-50"
+              className="flex cursor-pointer gap-3 rounded-xl border border-slate-200 p-4 text-sm leading-6 text-slate-800 transition hover:border-slate-400 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-slate-700 has-[:checked]:border-slate-500 has-[:checked]:bg-slate-50 dark:hover:border-slate-500 dark:has-[:focus-visible]:outline-slate-300 dark:has-[:checked]:border-slate-300 dark:has-[:checked]:bg-slate-800"
             >
               <input
                 type="radio"
@@ -53,7 +53,7 @@ export function QuestionView({
                 value={option.id}
                 checked={selectedOptionId === option.id}
                 onChange={() => onSelect(option)}
-                className="mt-1 size-4 shrink-0 accent-slate-800"
+                className="mt-1 size-4 shrink-0 accent-slate-800 dark:accent-slate-200"
               />
               <span>{option.text}</span>
             </label>

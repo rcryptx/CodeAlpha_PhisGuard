@@ -69,10 +69,10 @@ export function ResourcesDirectory({
             type="button"
             aria-pressed={category === option}
             onClick={() => setCategory(option)}
-            className={`min-h-10 rounded-full border px-4 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 ${
+            className={`min-h-10 rounded-full border px-4 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700 dark:focus-visible:outline-slate-300 ${
               category === option
-                ? "border-slate-800 bg-slate-800 text-white"
-                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                ? "border-slate-800 bg-slate-800 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900"
+                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
             }`}
           >
             {option}

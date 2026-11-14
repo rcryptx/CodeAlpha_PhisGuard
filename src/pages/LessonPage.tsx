@@ -239,7 +239,7 @@ export function LessonPage() {
               {lesson.references.map((reference) => (
                 <li key={reference.url}>
                   <a
-                    className="text-slate-700 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                    className="text-slate-700 underline decoration-slate-400 underline-offset-4 hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:hover:text-white"
                     href={reference.url}
                   >
                     {reference.label}
